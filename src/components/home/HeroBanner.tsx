@@ -77,7 +77,7 @@ export const HeroBanner: React.FC = () => {
   return (
     <section className="w-full max-w-7xl mx-auto px-4 md:px-8 pt-4 pb-6 font-sans">
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 items-stretch min-h-[440px]">
-        {/* LEFT COLUMN: Vertical Category Menu Sidebar (AliExpress/Alibaba Marketplace Style) */}
+        {/* LEFT COLUMN: Vertical Category Menu Sidebar */}
         <div className="hidden lg:block lg:col-span-3 bg-white rounded-xl shadow-md border border-slate-200 p-3 select-none flex flex-col justify-between">
           <div className="space-y-1">
             <div className="px-3 py-2 text-xs font-black text-slate-800 uppercase tracking-wider border-b border-slate-100 flex items-center justify-between mb-1">
@@ -145,8 +145,8 @@ export const HeroBanner: React.FC = () => {
           </div>
         </div>
 
-        {/* CENTER COLUMN: Main Banner Carousel */}
-        <div className="col-span-1 lg:col-span-6 relative rounded-2xl overflow-hidden shadow-lg border border-slate-200 min-h-[380px] sm:min-h-[440px] group bg-slate-900">
+        {/* MAIN HERO BANNER CAROUSEL (Expands to 9 columns) */}
+        <div className="col-span-1 lg:col-span-9 relative rounded-2xl overflow-hidden shadow-lg border border-slate-200 min-h-[380px] sm:min-h-[440px] group bg-slate-900">
           {slides.map((slide, idx) => (
             <div
               key={slide.id}
@@ -167,17 +167,17 @@ export const HeroBanner: React.FC = () => {
               <div className="absolute inset-0 bg-gradient-to-t from-[#002F75]/90 via-[#0047AB]/40 to-transparent" />
 
               {/* Slide Text Content */}
-              <div className="relative z-10 h-full p-6 sm:p-10 flex flex-col justify-end text-white space-y-3">
-                <div className="inline-flex items-center gap-1.5 bg-amber-400 text-slate-950 font-black text-[10px] px-3 py-1 rounded-full uppercase tracking-wider w-fit shadow-md">
-                  <Zap className="w-3 h-3 fill-slate-950" />
+              <div className="relative z-10 h-full p-6 sm:p-12 flex flex-col justify-end text-white space-y-4">
+                <div className="inline-flex items-center gap-1.5 bg-amber-400 text-slate-950 font-black text-xs px-3.5 py-1 rounded-full uppercase tracking-wider w-fit shadow-md">
+                  <Zap className="w-3.5 h-3.5 fill-slate-950" />
                   {slide.tag}
                 </div>
 
-                <h2 className="text-2xl sm:text-4xl font-extrabold tracking-tight leading-tight text-white drop-shadow-md">
+                <h2 className="text-2xl sm:text-5xl font-extrabold tracking-tight leading-tight text-white drop-shadow-md max-w-2xl">
                   {slide.title}
                 </h2>
 
-                <p className="text-xs sm:text-sm text-slate-200 max-w-md font-medium">
+                <p className="text-xs sm:text-base text-slate-200 max-w-lg font-medium">
                   {slide.subtitle}
                 </p>
 
@@ -185,7 +185,7 @@ export const HeroBanner: React.FC = () => {
                   <Link
                     href={slide.ctaLink}
                     onClick={() => triggerPageLoading()}
-                    className="inline-flex items-center gap-2 bg-amber-400 hover:bg-amber-500 text-slate-950 font-black px-6 py-2.5 rounded-full text-xs uppercase tracking-wider shadow-lg transition-transform hover:scale-105"
+                    className="inline-flex items-center gap-2 bg-amber-400 hover:bg-amber-500 text-slate-950 font-black px-7 py-3 rounded-full text-xs sm:text-sm uppercase tracking-wider shadow-lg transition-transform hover:scale-105"
                   >
                     <span>{slide.ctaText}</span>
                     <ArrowRight className="w-4 h-4" />
@@ -198,93 +198,28 @@ export const HeroBanner: React.FC = () => {
           {/* Slider Left/Right Arrows */}
           <button
             onClick={() => setCurrentSlide((prev) => (prev > 0 ? prev - 1 : slides.length - 1))}
-            className="absolute left-3 top-1/2 -translate-y-1/2 z-20 w-8 h-8 rounded-full bg-black/40 hover:bg-[#0047AB] text-white flex items-center justify-center backdrop-blur-sm transition-colors"
+            className="absolute left-4 top-1/2 -translate-y-1/2 z-20 w-9 h-9 rounded-full bg-black/40 hover:bg-[#0047AB] text-white flex items-center justify-center backdrop-blur-sm transition-colors shadow-md"
           >
-            <ChevronLeft className="w-4 h-4" />
+            <ChevronLeft className="w-5 h-5" />
           </button>
           <button
             onClick={() => setCurrentSlide((prev) => (prev < slides.length - 1 ? prev + 1 : 0))}
-            className="absolute right-3 top-1/2 -translate-y-1/2 z-20 w-8 h-8 rounded-full bg-black/40 hover:bg-[#0047AB] text-white flex items-center justify-center backdrop-blur-sm transition-colors"
+            className="absolute right-4 top-1/2 -translate-y-1/2 z-20 w-9 h-9 rounded-full bg-black/40 hover:bg-[#0047AB] text-white flex items-center justify-center backdrop-blur-sm transition-colors shadow-md"
           >
-            <ChevronRight className="w-4 h-4" />
+            <ChevronRight className="w-5 h-5" />
           </button>
 
           {/* Slider Progress Dots */}
-          <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-20 flex items-center gap-2">
+          <div className="absolute bottom-5 left-1/2 -translate-x-1/2 z-20 flex items-center gap-2">
             {slides.map((_, idx) => (
               <button
                 key={idx}
                 onClick={() => setCurrentSlide(idx)}
-                className={`h-1.5 rounded-full transition-all ${
-                  currentSlide === idx ? 'w-6 bg-amber-400' : 'w-2 bg-white/60 hover:bg-white'
+                className={`h-2 rounded-full transition-all ${
+                  currentSlide === idx ? 'w-8 bg-amber-400' : 'w-2.5 bg-white/60 hover:bg-white'
                 }`}
               />
             ))}
-          </div>
-        </div>
-
-        {/* RIGHT COLUMN: Promotional Member & Deal Cards */}
-        <div className="hidden lg:flex lg:col-span-3 flex-col gap-4">
-          {/* Welcome User Card */}
-          <div className="bg-gradient-to-br from-[#0047AB] to-[#002F75] text-white rounded-xl p-4 shadow-md border border-[#0047AB]/40 flex flex-col justify-between">
-            <div className="space-y-2">
-              <div className="flex items-center gap-2">
-                <div className="w-8 h-8 rounded-full bg-amber-400 text-slate-950 font-black flex items-center justify-center text-xs">
-                  OB
-                </div>
-                <div>
-                  <div className="text-xs font-bold text-white">Welcome to Orbit Gebeya</div>
-                  <div className="text-[10px] text-slate-300">Member Exclusive Discounts</div>
-                </div>
-              </div>
-
-              <div className="pt-2 flex items-center gap-2">
-                <Link
-                  href="/login"
-                  className="flex-1 bg-amber-400 hover:bg-amber-500 text-slate-950 text-[11px] font-bold py-1.5 rounded-lg text-center transition-colors"
-                >
-                  Join / Sign In
-                </Link>
-                <Link
-                  href="/all-products"
-                  className="flex-1 bg-white/10 hover:bg-white/20 text-white text-[11px] font-bold py-1.5 rounded-lg text-center border border-white/20 transition-colors"
-                >
-                  Deals Center
-                </Link>
-              </div>
-            </div>
-          </div>
-
-          {/* Small Feature Promo Card 1 */}
-          <div className="flex-1 bg-white rounded-xl p-3.5 shadow-md border border-slate-200 flex items-center justify-between gap-3 group hover:border-[#0047AB] transition-colors">
-            <div className="space-y-1">
-              <span className="text-[9px] font-extrabold uppercase text-amber-600 bg-amber-100 px-2 py-0.5 rounded">
-                MIN 50% OFF
-              </span>
-              <h3 className="text-xs font-bold text-slate-900 group-hover:text-[#0047AB]">
-                Smart 4K TVs Clearance
-              </h3>
-              <p className="text-[10px] text-slate-500">Limited Stock Available</p>
-            </div>
-            <div className="relative w-16 h-16 shrink-0 bg-slate-50 rounded-lg overflow-hidden border">
-              <Image src="/img/android20orbit65.webp" alt="TV" fill className="object-contain p-1" />
-            </div>
-          </div>
-
-          {/* Small Feature Promo Card 2 */}
-          <div className="flex-1 bg-white rounded-xl p-3.5 shadow-md border border-slate-200 flex items-center justify-between gap-3 group hover:border-[#0047AB] transition-colors">
-            <div className="space-y-1">
-              <span className="text-[9px] font-extrabold uppercase text-[#0047AB] bg-blue-50 px-2 py-0.5 rounded">
-                BEST SELLER
-              </span>
-              <h3 className="text-xs font-bold text-slate-900 group-hover:text-[#0047AB]">
-                Automatic Washers
-              </h3>
-              <p className="text-[10px] text-slate-500">Free Home Delivery</p>
-            </div>
-            <div className="relative w-16 h-16 shrink-0 bg-slate-50 rounded-lg overflow-hidden border">
-              <Image src="/img/product-washing1.jpeg" alt="Washer" fill className="object-contain p-1" />
-            </div>
           </div>
         </div>
       </div>
