@@ -75,33 +75,28 @@ export const ShopByCategory: React.FC = () => {
         </div>
       </div>
 
-      {/* MOBILE: Native Touch Horizontal Scroll Container (Scrollable by hand on phones) */}
-      <div className="flex sm:hidden overflow-x-auto scrollbar-none touch-pan-x gap-3 py-1 px-0.5 scroll-smooth">
+      {/* MOBILE: Native Touch Horizontal Scroll Container (Circle Category Avatars) */}
+      <div className="flex sm:hidden overflow-x-auto scrollbar-none touch-pan-x gap-4 py-2 px-1 scroll-smooth">
         {homeCategories.map((cat) => (
           <Link
             key={cat.id}
             href={`/all-products?category=${encodeURIComponent(cat.name)}`}
-            className="group shrink-0 w-32 bg-white rounded-2xl border border-slate-200/80 p-2.5 flex flex-col items-center justify-between hover:border-[#02367B] hover:shadow-md transition-all duration-300 relative"
+            className="group shrink-0 flex flex-col items-center justify-center space-y-1.5 w-20 cursor-pointer"
           >
-            {/* Image Container */}
-            <div className="relative w-full aspect-square bg-slate-50/60 rounded-xl p-2 flex items-center justify-center overflow-hidden mb-2">
+            {/* Circle Image Avatar Box */}
+            <div className="relative w-16 h-16 rounded-full bg-gradient-to-tr from-blue-50 to-indigo-50 border-2 border-slate-200 p-2 overflow-hidden shadow-xs group-hover:border-[#0056B3] transition-colors flex items-center justify-center">
               <Image
                 src={cat.image}
                 alt={cat.name}
                 fill
-                className="object-contain p-1.5 group-hover:scale-105 transition-transform duration-300 ease-out"
+                className="object-contain p-2 group-hover:scale-110 transition-transform duration-300"
               />
             </div>
 
-            {/* Category Info */}
-            <div className="w-full text-center space-y-0.5">
-              <h3 className="text-[11px] font-bold text-slate-900 group-hover:text-[#02367B] transition-colors truncate">
-                {cat.name}
-              </h3>
-              <p className="text-[9px] font-medium text-slate-400">
-                {cat.itemCount} Items
-              </p>
-            </div>
+            {/* Category Name */}
+            <h3 className="text-[10px] font-extrabold text-slate-800 group-hover:text-[#0056B3] text-center line-clamp-1 transition-colors leading-tight">
+              {cat.name}
+            </h3>
           </Link>
         ))}
       </div>

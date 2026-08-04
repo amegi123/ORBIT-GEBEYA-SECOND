@@ -3,14 +3,13 @@
 import React from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Home, Grid, Phone, ShoppingCart, User } from 'lucide-react';
+import { Home, LayoutGrid, Zap, ShoppingCart, User } from 'lucide-react';
 import { useCart } from '@/context/CartContext';
 
 export const MobileBottomNav: React.FC = () => {
   const pathname = usePathname();
   const { cart, setIsCartOpen } = useCart();
 
-  // Hide MobileBottomNav completely on standalone login and signup pages
   if (pathname === '/login' || pathname === '/signup') {
     return null;
   }
@@ -18,64 +17,65 @@ export const MobileBottomNav: React.FC = () => {
   const totalCartCount = cart.reduce((sum, item) => sum + item.quantity, 0);
 
   return (
-    <div className="fixed bottom-0 left-0 right-0 z-50 lg:hidden bg-[#02367B]/95 backdrop-blur-md text-white border-t border-[#005BAA]/80 shadow-[0_-4px_20px_rgba(0,0,0,0.3)] select-none">
-      <div className="flex items-center justify-around py-2 px-1">
-        {/* 1. Home Link */}
+    <div className="fixed bottom-0 left-0 right-0 z-50 lg:hidden bg-[#0056B3] text-white border-t border-white/10 shadow-[0_-4px_16px_rgba(0,0,0,0.2)] select-none">
+      <div className="flex items-center justify-around py-1.5 px-1">
+        {/* 1. Home */}
         <Link
           href="/"
-          className="flex flex-col items-center justify-center gap-0.5 text-white hover:opacity-80 transition-opacity py-1 px-3"
+          className={`flex flex-col items-center justify-center gap-0.5 py-1 px-3 transition-colors ${
+            pathname === '/' ? 'text-amber-300 font-extrabold' : 'text-white hover:text-amber-300'
+          }`}
         >
-          <Home className="w-5 h-5 text-white" />
-          <span className="text-[10px] font-bold tracking-tight text-white">Home</span>
+          <Home className="w-5 h-5" />
+          <span className="text-[10px] tracking-tight">Home</span>
         </Link>
 
-        {/* 2. Categories Link */}
+        {/* 2. Categories */}
         <Link
           href="/all-products"
-          className="flex flex-col items-center justify-center gap-0.5 text-white hover:opacity-80 transition-opacity py-1 px-3"
+          className={`flex flex-col items-center justify-center gap-0.5 py-1 px-3 transition-colors ${
+            pathname === '/all-products' ? 'text-amber-300 font-extrabold' : 'text-white hover:text-amber-300'
+          }`}
         >
-          <Grid className="w-5 h-5 text-white" />
-          <span className="text-[10px] font-bold tracking-tight text-white">Categories</span>
+          <LayoutGrid className="w-5 h-5" />
+          <span className="text-[10px] tracking-tight">Categories</span>
         </Link>
 
-        {/* 3. Call Hotline 6226 */}
-        <a
-          href="tel:6226"
-          className="flex flex-col items-center justify-center gap-0.5 py-1 px-3 text-white hover:opacity-80 transition-opacity"
+        {/* 3. Flash Deals */}
+        <Link
+          href="/#super-deals"
+          className="flex flex-col items-center justify-center gap-0.5 py-1 px-3 text-amber-300 hover:text-amber-400 font-extrabold transition-colors"
         >
-          <div className="w-7 h-7 rounded-full bg-white text-[#02367B] flex items-center justify-center font-black shadow-md">
-            <Phone className="w-3.5 h-3.5 text-[#02367B]" />
-          </div>
-          <span className="text-[10px] font-black tracking-tight text-white">6226</span>
-        </a>
+          <Zap className="w-5 h-5 fill-amber-300" />
+          <span className="text-[10px] tracking-tight">Deals</span>
+        </Link>
 
         {/* 4. Cart Button */}
         <button
           onClick={() => setIsCartOpen(true)}
-          className="relative flex flex-col items-center justify-center gap-0.5 text-white hover:opacity-80 transition-opacity py-1 px-3"
+          className="relative flex flex-col items-center justify-center gap-0.5 py-1 px-3 text-white hover:text-amber-300 transition-colors"
           aria-label="Open Cart"
         >
           <div className="relative">
-            <ShoppingCart className="w-5 h-5 text-white" />
+            <ShoppingCart className="w-5 h-5" />
             {totalCartCount > 0 && (
-              <span className="absolute -top-2 -right-2 bg-white text-[#02367B] text-[9px] font-black w-4 h-4 rounded-full flex items-center justify-center shadow-md">
+              <span className="absolute -top-1.5 -right-2 bg-amber-400 text-slate-950 text-[9px] font-black w-4 h-4 rounded-full flex items-center justify-center shadow-sm">
                 {totalCartCount}
               </span>
             )}
           </div>
-          <span className="text-[10px] font-bold tracking-tight text-white">Cart</span>
+          <span className="text-[10px] tracking-tight">Cart</span>
         </button>
 
-        {/* 5. Account / Login Link */}
+        {/* 5. Account */}
         <Link
           href="/login"
-          className="flex flex-col items-center justify-center gap-0.5 text-white hover:opacity-80 transition-opacity py-1 px-3"
+          className="flex flex-col items-center justify-center gap-0.5 py-1 px-3 text-white hover:text-amber-300 transition-colors"
         >
-          <User className="w-5 h-5 text-white" />
-          <span className="text-[10px] font-bold tracking-tight text-white">Account</span>
+          <User className="w-5 h-5" />
+          <span className="text-[10px] tracking-tight">Account</span>
         </Link>
       </div>
     </div>
   );
 };
-
