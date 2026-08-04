@@ -13,13 +13,15 @@ import {
   X,
   MapPin,
   Truck,
-  Globe,
-  LogIn,
+  Heart,
+  User,
   ChevronDown,
+  Sparkles,
+  Zap,
+  Grid,
 } from 'lucide-react';
 
-// SVG Flag Components for high quality rendering across all OS/Browsers
-const EthiopiaFlag: React.FC<{ className?: string }> = ({ className = "w-5 h-3.5" }) => (
+const EthiopiaFlag: React.FC<{ className?: string }> = ({ className = 'w-5 h-3.5' }) => (
   <svg className={`${className} rounded-xs overflow-hidden shadow-xs shrink-0 inline-block`} viewBox="0 0 600 400" aria-hidden="true">
     <rect width="600" height="133.3" fill="#009A44" />
     <rect y="133.3" width="600" height="133.3" fill="#FED100" />
@@ -31,7 +33,7 @@ const EthiopiaFlag: React.FC<{ className?: string }> = ({ className = "w-5 h-3.5
   </svg>
 );
 
-const USFlag: React.FC<{ className?: string }> = ({ className = "w-5 h-3.5" }) => (
+const USFlag: React.FC<{ className?: string }> = ({ className = 'w-5 h-3.5' }) => (
   <svg className={`${className} rounded-xs overflow-hidden shadow-xs shrink-0 inline-block`} viewBox="0 0 740 390" aria-hidden="true">
     <rect width="740" height="390" fill="#B22234" />
     <rect y="30" width="740" height="30" fill="#FFFFFF" />
@@ -45,30 +47,6 @@ const USFlag: React.FC<{ className?: string }> = ({ className = "w-5 h-3.5" }) =
       <circle cx="30" cy="25" r="7" />
       <circle cx="80" cy="25" r="7" />
       <circle cx="130" cy="25" r="7" />
-      <circle cx="180" cy="25" r="7" />
-      <circle cx="230" cy="25" r="7" />
-      <circle cx="55" cy="55" r="7" />
-      <circle cx="105" cy="55" r="7" />
-      <circle cx="155" cy="55" r="7" />
-      <circle cx="205" cy="55" r="7" />
-      <circle cx="30" cy="85" r="7" />
-      <circle cx="80" cy="85" r="7" />
-      <circle cx="130" cy="85" r="7" />
-      <circle cx="180" cy="85" r="7" />
-      <circle cx="230" cy="85" r="7" />
-      <circle cx="55" cy="115" r="7" />
-      <circle cx="105" cy="115" r="7" />
-      <circle cx="155" cy="115" r="7" />
-      <circle cx="205" cy="115" r="7" />
-      <circle cx="30" cy="145" r="7" />
-      <circle cx="80" cy="145" r="7" />
-      <circle cx="130" cy="145" r="7" />
-      <circle cx="180" cy="145" r="7" />
-      <circle cx="230" cy="145" r="7" />
-      <circle cx="55" cy="175" r="7" />
-      <circle cx="105" cy="175" r="7" />
-      <circle cx="155" cy="175" r="7" />
-      <circle cx="205" cy="175" r="7" />
     </g>
   </svg>
 );
@@ -77,89 +55,83 @@ export const Header: React.FC = () => {
   const pathname = usePathname();
   const { cart, setIsCartOpen } = useCart();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [searchCategory, setSearchCategory] = useState('All Categories');
   const [searchQuery, setSearchQuery] = useState('');
-  const [isVisible, setIsVisible] = useState(true);
-  const [lastScrollY, setLastScrollY] = useState(0);
+  const [categoryDropdownOpen, setCategoryDropdownOpen] = useState(false);
   const [currentLang, setCurrentLang] = useState<'am' | 'en'>('am');
-  const [placeholderIndex, setPlaceholderIndex] = useState(0);
 
-  const searchSuggestions = [
-    'Search Samsung TV...',
-    'Search LG Refrigerator...',
-    'Search Washing Machine...',
-    'Search Water Dispenser...',
-    'Search Electric Stove...',
-    'Search Orbit Smart Appliances...',
-  ];
-
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setPlaceholderIndex((prev) => (prev + 1) % searchSuggestions.length);
-    }, 2800);
-    return () => clearInterval(timer);
-  }, [searchSuggestions.length]);
-
-  // Auto-hide header on mobile when scrolling down, show when scrolling up
-  useEffect(() => {
-    const handleScroll = () => {
-      const currentScrollY = window.scrollY;
-
-      // Only apply scroll hide/show logic on mobile (< 1024px)
-      if (window.innerWidth < 1024) {
-        if (currentScrollY > lastScrollY && currentScrollY > 60) {
-          setIsVisible(false); // Scroll down -> hide
-        } else {
-          setIsVisible(true); // Scroll up -> show
-        }
-      } else {
-        setIsVisible(true);
-      }
-
-      setLastScrollY(currentScrollY);
-    };
-
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, [lastScrollY]);
-
-  // Hide Header completely on standalone login and signup pages
   if (pathname === '/login' || pathname === '/signup') {
     return null;
   }
 
   const totalCartCount = cart.reduce((sum, item) => sum + item.quantity, 0);
 
+  const categoriesList = [
+    'All Categories',
+    'Televisions & Audio',
+    'Refrigerators & Cooling',
+    'Washing Machines',
+    'Stoves & Cookers',
+    'Water Dispensers',
+    'Kitchenware & Ovens',
+  ];
+
   const navLinks = [
-    { name: 'Home', href: '/' },
-    { name: 'All Products', href: '/all-products' },
+    { name: 'SUPER DEALS', href: '/#super-deals', highlight: true },
+    { name: 'Top Ranking', href: '/#top-ranking' },
+    { name: 'New Arrivals', href: '/#new-arrivals' },
     { name: 'Televisions', href: '/#category-tvs' },
     { name: 'Refrigerators', href: '/#category-fridges' },
     { name: 'Washing Machines', href: '/#category-washers' },
-    { name: 'Stoves Machines', href: '/#category-stoves' },
+    { name: 'Stoves & Cookers', href: '/#category-stoves' },
     { name: 'Water Dispensers', href: '/#category-dispensers' },
-    { name: 'Dishwashers', href: '/#category-kitchen' },
   ];
 
   return (
-    <header
-      className={`w-full bg-[#02367B] text-white sticky top-0 z-40 shadow-md transition-transform duration-300 ease-in-out ${
-        isVisible ? 'translate-y-0' : '-translate-y-full lg:translate-y-0'
-      }`}
-    >
-      {/* Main Top Header Bar (First Color: #02367B) */}
-      <div className="bg-[#02367B] max-w-7xl mx-auto px-4 md:px-8 py-2 flex items-center justify-between gap-3">
-        {/* Mobile Menu Trigger */}
+    <header className="w-full sticky top-0 z-50 bg-[#0047AB] text-white shadow-lg font-sans">
+      {/* Top Announcement Ticker Bar */}
+      <div className="bg-[#002F75] text-slate-200 text-[11px] py-1 px-4 border-b border-white/10">
+        <div className="max-w-7xl mx-auto flex items-center justify-between">
+          <div className="flex items-center gap-2 font-medium">
+            <span className="bg-amber-400 text-slate-950 font-black text-[9px] px-1.5 py-0.5 rounded uppercase">
+              HOT
+            </span>
+            <span className="hidden sm:inline">
+              Smart Home, Smart Savings! Free Delivery in Addis Ababa on Orders over 5,000 ETB
+            </span>
+            <span className="sm:hidden truncate">Free Delivery over 5,000 ETB</span>
+          </div>
+
+          <div className="flex items-center gap-4">
+            <a href="tel:6226" className="flex items-center gap-1 font-bold text-amber-300 hover:underline">
+              <Phone className="w-3 h-3" />
+              <span>Hotline: 6226</span>
+            </a>
+            <button
+              onClick={() => setCurrentLang(currentLang === 'am' ? 'en' : 'am')}
+              className="flex items-center gap-1 hover:text-amber-300 font-medium transition-colors"
+            >
+              {currentLang === 'am' ? <EthiopiaFlag className="w-4 h-3" /> : <USFlag className="w-4 h-3" />}
+              <span>{currentLang === 'am' ? 'አማርኛ' : 'English'}</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      {/* Main Marketplace Navbar */}
+      <div className="max-w-7xl mx-auto px-4 md:px-8 py-3 flex items-center justify-between gap-4">
+        {/* Mobile Hamburger Menu */}
         <button
           onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-          className="lg:hidden text-white p-1 hover:text-amber-300 transition-colors"
+          className="lg:hidden p-1.5 rounded-lg bg-[#003685] text-white hover:text-amber-300"
           aria-label="Toggle Menu"
         >
           {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
         </button>
 
         {/* Orbit Brand Logo */}
-        <Link href="/" className="flex items-center shrink-0 p-0 m-0">
-          <div className="relative h-11 w-44 sm:h-12 sm:w-52 md:h-14 md:w-60 lg:h-16 lg:w-64 hover:scale-105 transition-transform">
+        <Link href="/" className="flex items-center shrink-0">
+          <div className="relative h-10 w-40 sm:h-12 sm:w-52 hover:scale-102 transition-transform">
             <Image
               src="/img/Orbi logo.svg"
               alt="Orbit Electronics Logo"
@@ -170,111 +142,153 @@ export const Header: React.FC = () => {
           </div>
         </Link>
 
-        {/* Desktop Search Input (hidden on mobile, visible on lg+) */}
-        <div className="hidden lg:flex flex-1 max-w-lg items-center bg-white rounded-full p-1 border border-[#00A9E0]/40 shadow-inner">
+        {/* Integrated Multi-Category Search Bar (AliExpress / Marketplace Style) */}
+        <div className="hidden lg:flex flex-1 max-w-2xl items-center bg-white rounded-lg p-0.5 shadow-md border border-[#003685]">
+          {/* Category Dropdown Selector inside Search Bar */}
+          <div className="relative border-r border-slate-200">
+            <button
+              onClick={() => setCategoryDropdownOpen(!categoryDropdownOpen)}
+              className="flex items-center gap-1.5 px-3 py-2 text-xs font-semibold text-slate-700 hover:text-[#0047AB] bg-slate-50 hover:bg-slate-100 rounded-l-md transition-colors"
+            >
+              <span className="truncate max-w-[120px]">{searchCategory}</span>
+              <ChevronDown className="w-3.5 h-3.5 text-slate-500" />
+            </button>
+
+            {categoryDropdownOpen && (
+              <div className="absolute top-full left-0 mt-1 w-52 bg-white rounded-lg shadow-2xl border border-slate-200 py-1.5 z-50 text-xs text-slate-800">
+                {categoriesList.map((cat) => (
+                  <button
+                    key={cat}
+                    onClick={() => {
+                      setSearchCategory(cat);
+                      setCategoryDropdownOpen(false);
+                    }}
+                    className="w-full text-left px-4 py-2 hover:bg-[#0047AB]/10 hover:text-[#0047AB] font-medium transition-colors"
+                  >
+                    {cat}
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
+
+          {/* Search Input Field */}
           <input
             type="text"
-            placeholder={searchSuggestions[placeholderIndex]}
+            placeholder="Search Smart TV, Refrigerator, Washer, Stove..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full px-5 py-2 text-xs text-slate-800 bg-transparent focus:outline-none placeholder:text-slate-400 transition-all duration-300"
+            className="w-full px-4 py-2 text-xs text-slate-900 bg-transparent focus:outline-none placeholder:text-slate-400"
           />
-          <button className="bg-[#02367B] hover:bg-[#005BAA] text-white p-2.5 rounded-full shrink-0 transition-colors">
-            <Search className="w-3.5 h-3.5" />
+
+          {/* Search Action Button */}
+          <button className="bg-[#0047AB] hover:bg-[#003685] text-white px-5 py-2 rounded-r-md font-bold text-xs flex items-center gap-1.5 transition-colors shrink-0">
+            <Search className="w-4 h-4" />
+            <span>Search</span>
           </button>
         </div>
 
-        {/* Right Top Utilities (Desktop) */}
-        <div className="hidden xl:flex items-center gap-4 text-[11px] font-medium text-white">
-          {/* Store Locator */}
-          <Link href="#" className="flex items-center gap-1 text-white hover:text-amber-300 transition-colors">
-            <MapPin className="w-3.5 h-3.5 text-white" />
-            <span>Store Locator</span>
+        {/* Right User Actions (Wishlist, Cart, Account) */}
+        <div className="flex items-center gap-3 sm:gap-5">
+          {/* Wishlist Icon */}
+          <Link href="#" className="hidden sm:flex items-center gap-1.5 text-slate-100 hover:text-amber-300 transition-colors relative">
+            <div className="relative">
+              <Heart className="w-6 h-6" />
+              <span className="absolute -top-1 -right-1.5 bg-amber-400 text-slate-950 text-[9px] font-black w-4 h-4 rounded-full flex items-center justify-center">
+                0
+              </span>
+            </div>
+            <div className="hidden xl:flex flex-col text-[10px] leading-none font-medium">
+              <span className="text-slate-300">Wishlist</span>
+              <span className="font-bold text-white">Favorites</span>
+            </div>
           </Link>
 
-          {/* Track Order */}
-          <Link href="#" className="flex items-center gap-1 text-white hover:text-amber-300 transition-colors">
-            <Truck className="w-3.5 h-3.5 text-white" />
-            <span>Track Order</span>
-          </Link>
-
-          {/* Shortcode Phone 6226 */}
-          <a href="tel:6226" className="flex items-center gap-1 text-white hover:text-amber-300 transition-colors font-bold">
-            <Phone className="w-3.5 h-3.5 text-white" />
-            <span>6226</span>
-          </a>
-
-          {/* Language Flip Button */}
-          <button
-            onClick={() => setCurrentLang(currentLang === 'am' ? 'en' : 'am')}
-            className="flex items-center gap-1.5 bg-[#002B66] hover:bg-[#001F4C] px-2.5 py-1 rounded border border-[#005BAA] font-bold text-white cursor-pointer transition-all active:scale-95 shadow-xs"
-            title="Flip Language (አማርኛ / English)"
-          >
-            {currentLang === 'am' ? <EthiopiaFlag className="w-4 h-3" /> : <USFlag className="w-4 h-3" />}
-            <span className="text-white text-xs select-none">{currentLang === 'am' ? 'አማርኛ' : 'English'}</span>
-          </button>
-
-          {/* Login / Register White Pill Button */}
-          <Link
-            href="/login"
-            className="flex items-center gap-1.5 bg-white text-[#02367B] hover:bg-amber-300 hover:text-slate-950 px-4 py-1.5 rounded-full text-xs font-bold transition-all shadow-sm"
-          >
-            <LogIn className="w-3.5 h-3.5 text-[#02367B]" />
-            <span>Login / Register</span>
-          </Link>
-        </div>
-
-        {/* Cart Icon Button */}
-        <div className="flex items-center">
+          {/* Shopping Cart Button */}
           <button
             onClick={() => setIsCartOpen(true)}
-            className="relative text-white p-2 hover:text-amber-300 transition-transform hover:scale-105"
-            title="Cart"
+            className="flex items-center gap-2 text-slate-100 hover:text-amber-300 transition-colors p-1"
           >
-            <ShoppingCart className="w-6 h-6" />
-            {totalCartCount > 0 && (
-              <span className="absolute -top-1 -right-1 bg-amber-400 text-slate-950 text-[10px] font-black w-4 h-4 rounded-full flex items-center justify-center shadow-md">
-                {totalCartCount}
-              </span>
-            )}
+            <div className="relative">
+              <ShoppingCart className="w-6 h-6" />
+              {totalCartCount > 0 && (
+                <span className="absolute -top-1.5 -right-2 bg-amber-400 text-slate-950 text-[10px] font-black w-4.5 h-4.5 rounded-full flex items-center justify-center shadow-md animate-pulse">
+                  {totalCartCount}
+                </span>
+              )}
+            </div>
+            <div className="hidden xl:flex flex-col text-[10px] leading-none text-left">
+              <span className="text-slate-300">Shopping Cart</span>
+              <span className="font-bold text-amber-300 text-xs">{totalCartCount} Items</span>
+            </div>
           </button>
+
+          {/* Account Login Button */}
+          <Link
+            href="/login"
+            className="flex items-center gap-2 bg-white text-[#0047AB] hover:bg-amber-300 hover:text-slate-950 px-3.5 py-1.5 rounded-full text-xs font-bold transition-all shadow-md shrink-0"
+          >
+            <User className="w-4 h-4 text-[#0047AB]" />
+            <span className="hidden sm:inline">Sign In / Register</span>
+          </Link>
         </div>
       </div>
 
-      {/* Mobile Dedicated Search Bar */}
-      <div className="lg:hidden px-4 pb-3 pt-1 max-w-7xl mx-auto">
-        <div className="flex items-center bg-white rounded-full p-1 border border-[#00A9E0]/40 shadow-md">
+      {/* Mobile Search Bar (Visible on mobile/tablet) */}
+      <div className="lg:hidden px-4 pb-2.5">
+        <div className="flex items-center bg-white rounded-md p-0.5 shadow border border-slate-200">
           <input
             type="text"
-            placeholder={searchSuggestions[placeholderIndex]}
+            placeholder="Search products..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full px-4 py-1.5 text-xs text-slate-900 bg-transparent focus:outline-none placeholder:text-slate-400 transition-all duration-300"
+            className="w-full px-3 py-1.5 text-xs text-slate-900 focus:outline-none"
           />
-          <button className="bg-[#02367B] hover:bg-[#005BAA] text-white p-2 rounded-full shrink-0 transition-colors">
-            <Search className="w-3.5 h-3.5" />
+          <button className="bg-[#0047AB] text-white p-2 rounded-md">
+            <Search className="w-4 h-4" />
           </button>
         </div>
       </div>
 
-      {/* Category Links Sub Nav Bar (Second Header Color: #005BAA) */}
-      <nav className="bg-[#005BAA] border-t border-white/10 hidden lg:block shadow-inner">
-        <div className="max-w-7xl mx-auto px-8 flex items-center justify-center gap-8 text-[11px] font-bold tracking-wide">
-          {navLinks.map((link) => (
-            <Link
-              key={link.name}
-              href={link.href}
-              className="py-2.5 text-white hover:text-amber-300 transition-colors border-b-2 border-transparent hover:border-amber-400"
-            >
-              {link.name}
-            </Link>
-          ))}
+      {/* Secondary Navigation Bar */}
+      <nav className="bg-[#003685] border-t border-white/10 hidden lg:block">
+        <div className="max-w-7xl mx-auto px-8 flex items-center justify-between">
+          {/* Left Category Button */}
+          <div className="flex items-center gap-2 bg-[#002F75] px-4 py-2.5 text-xs font-bold tracking-wide text-white border-x border-white/10 hover:bg-[#00245C] transition-colors cursor-pointer">
+            <Grid className="w-4 h-4 text-amber-400" />
+            <span>ALL CATEGORIES</span>
+            <ChevronDown className="w-3.5 h-3.5 text-slate-300" />
+          </div>
+
+          {/* Nav Links */}
+          <div className="flex items-center gap-6 text-xs font-bold tracking-wide">
+            {navLinks.map((link) => (
+              <Link
+                key={link.name}
+                href={link.href}
+                className={`py-2.5 transition-colors flex items-center gap-1 ${
+                  link.highlight
+                    ? 'text-amber-300 hover:text-amber-400 font-extrabold'
+                    : 'text-slate-100 hover:text-amber-300'
+                }`}
+              >
+                {link.highlight && <Zap className="w-3.5 h-3.5 fill-amber-300 text-amber-300" />}
+                <span>{link.name}</span>
+              </Link>
+            ))}
+          </div>
+
+          {/* Right Customer Tag */}
+          <div className="text-[11px] font-semibold text-amber-300 flex items-center gap-1">
+            <Sparkles className="w-3.5 h-3.5" />
+            <span>Gebeya Official Store</span>
+          </div>
         </div>
       </nav>
 
       {/* Mobile Drawer Menu */}
       {mobileMenuOpen && (
-        <div className="lg:hidden bg-[#005BAA] p-4 space-y-3 border-t border-white/10 shadow-xl text-xs">
+        <div className="lg:hidden bg-[#003685] p-4 space-y-3 border-t border-white/10 text-xs">
           <div className="flex flex-col gap-2 font-medium text-slate-100">
             {navLinks.map((link) => (
               <Link
@@ -284,39 +298,12 @@ export const Header: React.FC = () => {
                 className="py-2 border-b border-white/10 text-sm font-semibold flex items-center justify-between text-white"
               >
                 <span>{link.name}</span>
-                <span className="text-slate-300 text-xs">➔</span>
+                <span className="text-amber-400">➔</span>
               </Link>
             ))}
-            <Link
-              href="/login"
-              onClick={() => setMobileMenuOpen(false)}
-              className="py-2.5 text-amber-300 font-extrabold flex items-center gap-2"
-            >
-              <LogIn className="w-4 h-4" />
-              <span>Login / Register</span>
-            </Link>
-          </div>
-
-          <div className="pt-2 flex items-center justify-between text-xs text-white border-t border-white/10">
-            <Link href="#" className="flex items-center gap-1 text-white hover:text-amber-300">
-              <MapPin className="w-3.5 h-3.5 text-white" /> Store Locator
-            </Link>
-            <Link href="#" className="flex items-center gap-1 text-white hover:text-amber-300">
-              <Truck className="w-3.5 h-3.5 text-white" /> Track Order
-            </Link>
-
-            {/* Mobile Language Selector with Flag */}
-            <button
-              onClick={() => setCurrentLang(currentLang === 'am' ? 'en' : 'am')}
-              className="flex items-center gap-1.5 bg-[#02367B] px-2.5 py-1 rounded border border-white/20 text-white font-bold hover:bg-[#02367B]/80 transition-colors"
-            >
-              {currentLang === 'am' ? <EthiopiaFlag className="w-4 h-3" /> : <USFlag className="w-4 h-3" />}
-              <span className="text-white">{currentLang === 'am' ? 'አማርኛ' : 'English'}</span>
-            </button>
           </div>
         </div>
       )}
     </header>
   );
 };
-
