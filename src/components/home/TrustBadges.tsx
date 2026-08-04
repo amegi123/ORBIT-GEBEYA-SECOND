@@ -28,7 +28,7 @@ export const TrustBadges: React.FC = () => {
   ];
 
   return (
-    <section className="w-full max-w-7xl mx-auto px-4 md:px-8 py-6 font-sans">
+    <section className="w-full max-w-[1650px] mx-auto px-4 md:px-8 py-6 font-sans">
       <div className="bg-gradient-to-r from-blue-50 via-slate-50 to-blue-50 rounded-2xl border border-blue-100 p-4 sm:p-6 shadow-sm">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {badges.map((badge, idx) => (

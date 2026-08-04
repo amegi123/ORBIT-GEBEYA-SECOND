@@ -13,7 +13,7 @@ export const TopRankingSection: React.FC = () => {
   const { addToCart, triggerPageLoading } = useCart();
 
   return (
-    <section id="top-ranking" className="w-full max-w-7xl mx-auto px-4 md:px-8 py-4 font-sans">
+    <section id="top-ranking" className="w-full max-w-[1650px] mx-auto px-4 md:px-8 py-4 font-sans">
       <div className="bg-white rounded-2xl border border-slate-200 p-4 sm:p-6 shadow-md">
         {/* Section Header */}
         <div className="flex items-center justify-between border-b border-slate-200 pb-3 mb-4">

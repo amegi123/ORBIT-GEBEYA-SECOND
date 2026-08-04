@@ -6,9 +6,9 @@ import Link from 'next/link';
 
 export const PromoBanners: React.FC = () => {
   return (
-    <section className="w-full max-w-7xl mx-auto px-4 md:px-8 py-6 font-sans space-y-6">
+    <section className="w-full max-w-[1650px] mx-auto px-4 md:px-8 py-6 font-sans space-y-6">
       {/* 1. Main Full-Width Promotional Banner Image */}
-      <Link href="/all-products" className="block relative w-full h-[180px] sm:h-[240px] md:h-[280px] rounded-2xl overflow-hidden shadow-lg border border-slate-200 group">
+      <Link href="/all-products" className="block relative w-full h-[220px] sm:h-[300px] md:h-[360px] rounded-2xl overflow-hidden shadow-lg border border-slate-200 group">
         <Image
           src="/img/hero3.webp"
           alt="Audio Showcase Banner"

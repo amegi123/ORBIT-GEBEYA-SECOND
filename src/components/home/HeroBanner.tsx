@@ -75,11 +75,11 @@ export const HeroBanner: React.FC = () => {
   }, []);
 
   return (
-    <section className="w-full max-w-7xl mx-auto px-4 md:px-8 pt-4 pb-6 font-sans">
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 items-stretch min-h-[440px]">
+    <section className="w-full max-w-[1650px] mx-auto px-4 md:px-8 pt-4 pb-6 font-sans">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 items-stretch min-h-[480px]">
         {/* LEFT COLUMN: Vertical Category Menu Sidebar */}
-        <div className="hidden lg:block lg:col-span-3 bg-white rounded-xl shadow-md border border-slate-200 p-3 select-none flex flex-col justify-between">
-          <div className="space-y-1">
+        <div className="hidden lg:block lg:col-span-3 bg-white rounded-xl shadow-md border border-slate-200 p-3.5 select-none flex flex-col justify-between">
+          <div className="space-y-1.5">
             <div className="px-3 py-2 text-xs font-black text-slate-800 uppercase tracking-wider border-b border-slate-100 flex items-center justify-between mb-1">
               <span>Categories</span>
               <span className="text-[10px] text-[#0047AB] font-bold">Top Picks</span>
@@ -94,18 +94,18 @@ export const HeroBanner: React.FC = () => {
               >
                 <Link
                   href={`/all-products?category=${encodeURIComponent(cat.name)}`}
-                  className={`flex items-center justify-between px-3 py-2 rounded-lg text-xs font-semibold transition-all ${
+                  className={`flex items-center justify-between px-3.5 py-2.5 rounded-lg text-xs font-semibold transition-all ${
                     activeCategoryIndex === idx
                       ? 'bg-[#0047AB] text-white shadow-sm'
                       : 'text-slate-700 hover:bg-slate-50 hover:text-[#0047AB]'
                   }`}
                 >
-                  <div className="flex items-center gap-2.5">
-                    {categoryIcons[cat.id] || <CookingPot className="w-4 h-4" />}
-                    <span className="truncate max-w-[140px]">{cat.name}</span>
+                  <div className="flex items-center gap-3">
+                    {categoryIcons[cat.id] || <CookingPot className="w-4.5 h-4.5" />}
+                    <span className="truncate text-xs sm:text-sm font-semibold">{cat.name}</span>
                   </div>
                   <ChevronRight
-                    className={`w-3.5 h-3.5 ${
+                    className={`w-4 h-4 ${
                       activeCategoryIndex === idx ? 'text-amber-300' : 'text-slate-400'
                     }`}
                   />
@@ -146,7 +146,7 @@ export const HeroBanner: React.FC = () => {
         </div>
 
         {/* MAIN HERO BANNER CAROUSEL (Expands to 9 columns) */}
-        <div className="col-span-1 lg:col-span-9 relative rounded-2xl overflow-hidden shadow-lg border border-slate-200 min-h-[380px] sm:min-h-[440px] group bg-slate-900">
+        <div className="col-span-1 lg:col-span-9 relative rounded-2xl overflow-hidden shadow-lg border border-slate-200 min-h-[420px] sm:min-h-[500px] group bg-slate-900">
           {slides.map((slide, idx) => (
             <div
               key={slide.id}

@@ -87,7 +87,7 @@ export const Header: React.FC = () => {
     <header className="w-full sticky top-0 z-50 bg-white font-sans shadow-sm select-none">
       {/* 1. TOP UTILITY BAR (Light Gray Background: #F8F9FA) */}
       <div className="bg-[#F8F9FA] text-slate-600 text-xs border-b border-slate-200 py-1.5 px-4 md:px-8">
-        <div className="max-w-7xl mx-auto flex items-center justify-between">
+        <div className="max-w-[1650px] mx-auto flex items-center justify-between">
           {/* Left: Phone Number */}
           <div className="flex items-center gap-2 font-medium text-slate-700">
             <Phone className="w-3.5 h-3.5 text-[#0056B3]" />
@@ -125,7 +125,7 @@ export const Header: React.FC = () => {
       </div>
 
       {/* 2. MIDDLE MAIN HEADER (White Background) */}
-      <div className="max-w-7xl mx-auto px-4 md:px-8 py-3 flex items-center justify-between gap-4 md:gap-8">
+      <div className="max-w-[1650px] mx-auto px-4 md:px-8 py-3 flex items-center justify-between gap-4 md:gap-8">
         {/* Mobile Menu Toggle */}
         <button
           onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
@@ -226,7 +226,7 @@ export const Header: React.FC = () => {
 
       {/* 3. BOTTOM NAVIGATION BAR (Solid Royal Blue Bar: #0056B3) */}
       <nav className="bg-[#0056B3] text-white">
-        <div className="max-w-7xl mx-auto px-4 md:px-8 flex items-center justify-between">
+        <div className="max-w-[1650px] mx-auto px-4 md:px-8 flex items-center justify-between">
           <div className="flex items-center gap-6">
             {/* Left White Button: Categories ▾ */}
             <div className="relative">

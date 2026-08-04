@@ -34,7 +34,7 @@ export const SuperDeals: React.FC = () => {
   const formatNumber = (num: number) => String(num).padStart(2, '0');
 
   return (
-    <section id="super-deals" className="w-full max-w-7xl mx-auto px-4 md:px-8 py-6 font-sans">
+    <section id="super-deals" className="w-full max-w-[1650px] mx-auto px-4 md:px-8 py-6 font-sans">
       <div className="bg-gradient-to-r from-blue-50 via-indigo-50 to-amber-50 rounded-2xl border border-blue-200 p-4 sm:p-6 shadow-md">
         {/* Header Bar: Title + Timer + View All Link */}
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 border-b border-blue-200/80 pb-4 mb-4">

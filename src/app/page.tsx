@@ -28,7 +28,7 @@ export default function HomePage() {
       {/* 3. Main Container for Marketplace Grid Sections */}
       <div className="space-y-4">
         {/* Shop by Category Icons Carousel */}
-        <div className="max-w-7xl mx-auto px-4 md:px-8">
+        <div className="max-w-[1650px] mx-auto px-4 md:px-8">
           <ShopByCategory />
         </div>
 
@@ -54,7 +54,7 @@ export default function HomePage() {
           products={appliancesSection}
         />
 
-        <div className="max-w-7xl mx-auto px-4 md:px-8 space-y-6">
+        <div className="max-w-[1650px] mx-auto px-4 md:px-8 space-y-6">
           {/* 8. New Arrivals Grid */}
           <ProductGridSection
             id="new-arrivals"
