@@ -6,14 +6,19 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { superDealsProducts } from '@/data/homeData';
 import { useCart } from '@/context/CartContext';
-import { Zap, ChevronRight, ShoppingCart, Eye } from 'lucide-react';
+import { ChevronRight, Star, ShoppingCart, Eye } from 'lucide-react';
 
 export const SuperDeals: React.FC = () => {
   const router = useRouter();
   const { addToCart, setQuickViewProduct, triggerPageLoading } = useCart();
 
-  // Ticking Countdown Timer (Hours, Minutes, Seconds)
-  const [timeLeft, setTimeLeft] = useState({ hours: 14, minutes: 35, seconds: 28 });
+  // Ticking Countdown Timer (Days, Hours, Minutes, Seconds)
+  const [timeLeft, setTimeLeft] = useState({
+    days: 514,
+    hours: 6,
+    minutes: 43,
+    seconds: 36,
+  });
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -23,9 +28,11 @@ export const SuperDeals: React.FC = () => {
         } else if (prev.minutes > 0) {
           return { ...prev, minutes: 59, seconds: 59 };
         } else if (prev.hours > 0) {
-          return { hours: prev.hours - 1, minutes: 59, seconds: 59 };
+          return { ...prev, hours: prev.hours - 1, minutes: 59, seconds: 59 };
+        } else if (prev.days > 0) {
+          return { days: prev.days - 1, hours: 23, minutes: 59, seconds: 59 };
         }
-        return { hours: 24, minutes: 0, seconds: 0 };
+        return { days: 365, hours: 24, minutes: 0, seconds: 0 };
       });
     }, 1000);
     return () => clearInterval(timer);
@@ -35,55 +42,78 @@ export const SuperDeals: React.FC = () => {
 
   return (
     <section id="super-deals" className="w-full max-w-[1650px] mx-auto px-4 md:px-8 py-6 font-sans">
-      <div className="bg-gradient-to-r from-blue-50 via-indigo-50 to-amber-50 rounded-2xl border border-blue-200 p-4 sm:p-6 shadow-md">
-        {/* Header Bar: Title + Timer + View All Link */}
-        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 border-b border-blue-200/80 pb-4 mb-4">
-          <div className="flex flex-wrap items-center gap-3">
-            <div className="flex items-center gap-1.5 bg-[#0047AB] text-white px-3 py-1 rounded-lg shadow-sm font-black text-sm uppercase">
-              <Zap className="w-4 h-4 text-amber-300 fill-amber-300 animate-pulse" />
-              <span>SUPER DEALS</span>
-            </div>
-
-            <span className="text-xs font-bold text-amber-600 bg-amber-100 px-2.5 py-1 rounded-md">
-              Min 50% Off
-            </span>
-
-            {/* Ticking Timer Box */}
-            <div className="flex items-center gap-1 text-xs font-bold text-slate-800 ml-1">
-              <span className="text-slate-500 font-medium">Ends in:</span>
-              <div className="flex items-center gap-1">
-                <span className="bg-[#0047AB] text-white px-2 py-0.5 rounded font-mono text-xs font-black">
-                  {formatNumber(timeLeft.hours)}
-                </span>
-                <span>:</span>
-                <span className="bg-[#0047AB] text-white px-2 py-0.5 rounded font-mono text-xs font-black">
-                  {formatNumber(timeLeft.minutes)}
-                </span>
-                <span>:</span>
-                <span className="bg-[#0047AB] text-white px-2 py-0.5 rounded font-mono text-xs font-black">
-                  {formatNumber(timeLeft.seconds)}
-                </span>
-              </div>
-            </div>
-          </div>
+      <div className="bg-[#F0F4FD] rounded-2xl p-4 sm:p-6 border border-blue-100 shadow-sm">
+        {/* Header Bar */}
+        <div className="flex items-center justify-between pb-3 mb-3">
+          <h2 className="text-xl sm:text-2xl font-black text-[#0056B3] tracking-tight uppercase">
+            FLASH DEAL
+          </h2>
 
           <Link
             href="/all-products"
-            className="text-xs font-bold text-[#0047AB] hover:text-[#002F75] flex items-center gap-1 transition-colors"
+            className="text-xs sm:text-sm font-bold text-[#0056B3] hover:underline flex items-center gap-0.5"
           >
-            <span>View All Deals</span>
+            <span>View All</span>
             <ChevronRight className="w-4 h-4" />
           </Link>
         </div>
 
-        {/* Super Deals Product Cards Grid */}
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3 sm:gap-4">
-          {superDealsProducts.map((prod) => {
-            const soldPercentage = prod.soldCount && prod.totalStock
-              ? Math.round((prod.soldCount / prod.totalStock) * 100)
-              : 75;
+        {/* Flash Deal Main Content Grid */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 items-stretch">
+          {/* LEFT TIMER BOX (Matching 6Valley Blue Counter Box) */}
+          <div className="lg:col-span-3 flex flex-col justify-between space-y-2">
+            <p className="text-xs font-semibold text-[#0056B3]">
+              Hurry Up ! The offer is limited. Grab while it lasts
+            </p>
 
-            return (
+            <div className="bg-[#0056B3] rounded-xl p-4 text-white flex flex-col justify-between flex-1 shadow-md border border-[#004085]">
+              {/* 4 Counter Boxes */}
+              <div className="grid grid-cols-4 gap-2 pt-2">
+                {/* Days */}
+                <div className="bg-[#1D68C9] rounded-lg p-2 text-center flex flex-col items-center justify-center">
+                  <span className="text-lg sm:text-xl font-black leading-none font-mono">
+                    {timeLeft.days}
+                  </span>
+                  <span className="text-[10px] text-slate-200 mt-1 font-medium">Days</span>
+                </div>
+
+                {/* Hours */}
+                <div className="bg-[#1D68C9] rounded-lg p-2 text-center flex flex-col items-center justify-center">
+                  <span className="text-lg sm:text-xl font-black leading-none font-mono">
+                    {formatNumber(timeLeft.hours)}
+                  </span>
+                  <span className="text-[10px] text-slate-200 mt-1 font-medium">Hours</span>
+                </div>
+
+                {/* Minutes */}
+                <div className="bg-[#1D68C9] rounded-lg p-2 text-center flex flex-col items-center justify-center">
+                  <span className="text-lg sm:text-xl font-black leading-none font-mono">
+                    {formatNumber(timeLeft.minutes)}
+                  </span>
+                  <span className="text-[10px] text-slate-200 mt-1 font-medium">Minutes</span>
+                </div>
+
+                {/* Seconds */}
+                <div className="bg-[#1D68C9] rounded-lg p-2 text-center flex flex-col items-center justify-center">
+                  <span className="text-lg sm:text-xl font-black leading-none font-mono">
+                    {formatNumber(timeLeft.seconds)}
+                  </span>
+                  <span className="text-[10px] text-slate-200 mt-1 font-medium">Seconds</span>
+                </div>
+              </div>
+
+              {/* White Progress Line at Bottom */}
+              <div className="pt-6 pb-1">
+                <div className="w-full h-1 bg-white/30 rounded-full overflow-hidden">
+                  <div className="w-3/4 h-full bg-white rounded-full" />
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* RIGHT PRODUCT CARDS GRID */}
+          <div className="lg:col-span-9 grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4">
+            {superDealsProducts.slice(0, 4).map((prod, idx) => (
               <div
                 key={prod.id}
                 onClick={(e) => {
@@ -91,11 +121,11 @@ export const SuperDeals: React.FC = () => {
                   triggerPageLoading();
                   router.push(`/product/${prod.id}`);
                 }}
-                className="group bg-white rounded-xl border border-slate-200 p-3 flex flex-col justify-between hover:shadow-xl hover:border-[#0047AB] transition-all duration-300 cursor-pointer relative"
+                className="group bg-white rounded-xl border border-slate-200/80 p-3 flex flex-col justify-between hover:shadow-lg hover:border-[#0056B3] transition-all duration-300 cursor-pointer relative"
               >
                 <div>
-                  {/* Image Container with Discount Badge */}
-                  <div className="relative w-full aspect-square bg-slate-50 rounded-lg p-2 overflow-hidden mb-2 border border-slate-100 flex items-center justify-center">
+                  {/* Image Box */}
+                  <div className="relative w-full aspect-square bg-white rounded-lg p-2 overflow-hidden mb-2.5 flex items-center justify-center">
                     <Image
                       src={prod.image}
                       alt={prod.name}
@@ -103,11 +133,18 @@ export const SuperDeals: React.FC = () => {
                       className="object-contain p-1 group-hover:scale-105 transition-transform duration-300"
                     />
 
-                    {/* Discount Tag */}
+                    {/* Blue Discount Tag */}
                     {prod.discountPercentage && (
-                      <span className="absolute top-1.5 left-1.5 bg-red-600 text-white font-black text-[10px] px-1.5 py-0.5 rounded shadow">
+                      <span className="absolute top-1 left-1 bg-[#0056B3] text-white font-black text-[10px] px-2 py-0.5 rounded shadow-sm">
                         -{prod.discountPercentage}%
                       </span>
+                    )}
+
+                    {/* Out of Stock banner demo for 1st item */}
+                    {idx === 0 && (
+                      <div className="absolute bottom-0 left-0 right-0 bg-[#3A3A3A]/90 text-white text-[11px] font-bold text-center py-1">
+                        Limited Stock
+                      </div>
                     )}
 
                     {/* Quick View Button */}
@@ -119,12 +156,12 @@ export const SuperDeals: React.FC = () => {
                           id: prod.id,
                           name: prod.name,
                           currentPrice: prod.price,
-                          oldPrice: prod.oldPrice || Math.round(prod.price * 1.3),
-                          discountPercentage: prod.discountPercentage || 25,
+                          oldPrice: prod.oldPrice || Math.round(prod.price * 1.2),
+                          discountPercentage: prod.discountPercentage || 15,
                           rating: prod.rating,
                           reviewCount: prod.reviewCount,
                           images: [prod.image],
-                          sku: 'ORB-SUPER-SKU',
+                          sku: 'ORB-FLASH-SKU',
                           brand: 'Orbit',
                           category: prod.category,
                           categoryHierarchy: ['Home', prod.category, prod.name],
@@ -133,7 +170,7 @@ export const SuperDeals: React.FC = () => {
                           stockCount: 15,
                           warranty: '2 Years Warranty',
                           shortDescription: prod.name,
-                          features: ['Super Deal Promo', 'Express Addis Delivery'],
+                          features: ['Flash Deal Special', 'Fast Addis Ababa Delivery'],
                           colors: [{ name: 'Black', hex: '#000' }],
                           sizes: ['Standard'],
                           specifications: [],
@@ -144,52 +181,43 @@ export const SuperDeals: React.FC = () => {
                           frequentlyBoughtTogether: [],
                         });
                       }}
-                      className="hidden sm:flex absolute top-1.5 right-1.5 w-7 h-7 rounded-full bg-white/90 text-slate-700 hover:bg-[#0047AB] hover:text-white items-center justify-center shadow transition-colors"
+                      className="hidden sm:flex absolute top-1 right-1 w-7 h-7 rounded-full bg-white/90 text-slate-700 hover:bg-[#0056B3] hover:text-white items-center justify-center shadow transition-colors"
                       title="Quick View"
                     >
                       <Eye className="w-3.5 h-3.5" />
                     </button>
                   </div>
 
-                  {/* Title & Category */}
-                  <div className="space-y-1">
-                    <span className="text-[9px] font-bold text-[#0047AB] uppercase tracking-wider">
-                      {prod.category}
-                    </span>
-                    <h3 className="text-xs font-bold text-slate-900 line-clamp-2 leading-tight group-hover:text-[#0047AB] transition-colors">
-                      {prod.name}
-                    </h3>
-                  </div>
+                  {/* Title */}
+                  <h3 className="text-xs font-bold text-slate-900 line-clamp-2 leading-tight group-hover:text-[#0056B3] transition-colors">
+                    {prod.name}
+                  </h3>
                 </div>
 
-                {/* Price & Sold Progress Bar */}
-                <div className="pt-2 space-y-2 border-t border-slate-100 mt-2">
-                  <div className="flex items-baseline gap-1">
+                {/* Price & Rating */}
+                <div className="pt-2 space-y-1 mt-2 border-t border-slate-100">
+                  <div className="flex items-center gap-1.5 flex-wrap">
+                    {prod.oldPrice && (
+                      <span className="text-[11px] text-slate-400 line-through">
+                        {prod.oldPrice.toLocaleString()} ETB
+                      </span>
+                    )}
                     <span className="text-sm font-black text-slate-900">
                       {prod.price.toLocaleString()} ETB
                     </span>
-                    {prod.oldPrice && (
-                      <span className="text-[10px] text-slate-400 line-through">
-                        {prod.oldPrice.toLocaleString()}
-                      </span>
-                    )}
                   </div>
 
-                  {/* Stock Sold Progress Indicator Bar */}
-                  <div className="space-y-1">
-                    <div className="w-full h-1.5 bg-slate-100 rounded-full overflow-hidden">
-                      <div
-                        className="h-full bg-gradient-to-r from-amber-400 to-amber-500 rounded-full"
-                        style={{ width: `${soldPercentage}%` }}
-                      />
+                  {/* Stars Rating */}
+                  <div className="flex items-center gap-1">
+                    <div className="flex items-center text-amber-400">
+                      {[...Array(5)].map((_, i) => (
+                        <Star key={i} className="w-3 h-3 fill-amber-400" />
+                      ))}
                     </div>
-                    <div className="flex items-center justify-between text-[9px] text-slate-500 font-medium">
-                      <span>Sold: {prod.soldCount}</span>
-                      <span className="text-amber-600 font-bold">{soldPercentage}%</span>
-                    </div>
+                    <span className="text-[10px] font-bold text-slate-600">({prod.reviewCount})</span>
                   </div>
 
-                  {/* Add to Cart Button */}
+                  {/* Add to Cart button */}
                   <button
                     onClick={(e) => {
                       e.stopPropagation();
@@ -198,12 +226,12 @@ export const SuperDeals: React.FC = () => {
                         id: prod.id,
                         name: prod.name,
                         currentPrice: prod.price,
-                        oldPrice: prod.oldPrice || Math.round(prod.price * 1.3),
-                        discountPercentage: prod.discountPercentage || 25,
+                        oldPrice: prod.oldPrice || Math.round(prod.price * 1.2),
+                        discountPercentage: prod.discountPercentage || 15,
                         rating: prod.rating,
                         reviewCount: prod.reviewCount,
                         images: [prod.image],
-                        sku: 'ORB-SUPER-SKU',
+                        sku: 'ORB-FLASH-SKU',
                         brand: 'Orbit',
                         category: prod.category,
                         categoryHierarchy: ['Home', prod.category, prod.name],
@@ -212,7 +240,7 @@ export const SuperDeals: React.FC = () => {
                         stockCount: 15,
                         warranty: '2 Years Warranty',
                         shortDescription: prod.name,
-                        features: ['Super Deal Promo', 'Express Addis Delivery'],
+                        features: ['Flash Deal Special', 'Fast Addis Ababa Delivery'],
                         colors: [{ name: 'Black', hex: '#000' }],
                         sizes: ['Standard'],
                         specifications: [],
@@ -223,15 +251,15 @@ export const SuperDeals: React.FC = () => {
                         frequentlyBoughtTogether: [],
                       });
                     }}
-                    className="w-full bg-amber-400 hover:bg-amber-500 text-slate-950 font-black text-xs py-1.5 rounded-lg flex items-center justify-center gap-1.5 shadow transition-colors mt-1"
+                    className="w-full bg-[#0056B3] hover:bg-[#004085] text-white font-bold text-xs py-1.5 rounded-md flex items-center justify-center gap-1 transition-colors shadow-xs mt-2"
                   >
-                    <ShoppingCart className="w-3.5 h-3.5 text-slate-950" />
-                    <span>Claim Deal</span>
+                    <ShoppingCart className="w-3.5 h-3.5 text-white" />
+                    <span>Add to Cart</span>
                   </button>
                 </div>
               </div>
-            );
-          })}
+            ))}
+          </div>
         </div>
       </div>
     </section>
