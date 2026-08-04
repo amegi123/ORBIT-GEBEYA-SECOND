@@ -226,3 +226,46 @@ export const similarProducts = [
     inStock: true,
   },
 ];
+
+export function getProductById(id: string): Product {
+  if (id === orbitProduct.id) {
+    return orbitProduct;
+  }
+
+  const foundInSimilar = similarProducts.find((p) => p.id === id);
+  if (foundInSimilar) {
+    return {
+      ...orbitProduct,
+      id: foundInSimilar.id,
+      name: foundInSimilar.name,
+      currentPrice: foundInSimilar.currentPrice,
+      oldPrice: foundInFoundPrice(foundInSimilar.oldPrice, foundInSimilar.currentPrice),
+      rating: foundInSimilar.rating,
+      reviewCount: foundInSimilar.reviewCount,
+      images: [foundInSimilar.image, ...orbitProduct.images.slice(1)],
+      category: foundInSimilar.category,
+      categoryHierarchy: ['Home', foundInSimilar.category, foundInSimilar.name],
+      shortDescription: foundInSimilar.name,
+    };
+  }
+
+  // Format clean title from slug ID
+  const cleanTitle = id
+    .split('-')
+    .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
+    .join(' ');
+
+  return {
+    ...orbitProduct,
+    id,
+    name: cleanTitle,
+    categoryHierarchy: ['Home', orbitProduct.category, cleanTitle],
+    shortDescription: `${cleanTitle} - Official Orbit Electronics with 2 Years Warranty.`,
+  };
+}
+
+function foundInFoundPrice(oldP?: number, currP?: number): number {
+  if (oldP) return oldP;
+  if (currP) return Math.round(currP * 1.15);
+  return 10000;
+}

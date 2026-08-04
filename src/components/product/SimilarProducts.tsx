@@ -2,12 +2,20 @@
 
 import React from 'react';
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 import { similarProducts } from '@/data/mockProduct';
 import { useCart } from '@/context/CartContext';
 import { Star, ShoppingBag, Eye, Heart } from 'lucide-react';
 
 export const SimilarProducts: React.FC = () => {
-  const { addToCart, toggleWishlist, wishlist, setQuickViewProduct } = useCart();
+  const router = useRouter();
+  const { addToCart, toggleWishlist, wishlist, setQuickViewProduct, triggerPageLoading } = useCart();
+
+  const handleProductClick = (e: React.MouseEvent, prodId: string) => {
+    e.preventDefault();
+    triggerPageLoading();
+    router.push(`/product/${prodId}`);
+  };
 
   return (
     <div className="w-full space-y-6 pt-6">
@@ -22,7 +30,8 @@ export const SimilarProducts: React.FC = () => {
           return (
             <div
               key={prod.id}
-              className="bg-white rounded-2xl border border-slate-200 p-4 space-y-3 hover:shadow-xl transition-all duration-300 group flex flex-col justify-between"
+              onClick={(e) => handleProductClick(e, prod.id)}
+              className="bg-white rounded-2xl border border-slate-200 p-4 space-y-3 hover:shadow-xl transition-all duration-300 group flex flex-col justify-between cursor-pointer"
             >
               <div className="relative w-full aspect-square bg-slate-50 rounded-xl overflow-hidden p-4">
                 <span className="absolute top-2 left-2 z-10 bg-rose-600 text-white text-[10px] font-extrabold px-2 py-0.5 rounded-full">
@@ -30,7 +39,10 @@ export const SimilarProducts: React.FC = () => {
                 </span>
 
                 <button
-                  onClick={() => toggleWishlist(prod.id)}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    toggleWishlist(prod.id);
+                  }}
                   className="absolute top-2 right-2 z-10 bg-white/80 hover:bg-white p-1.5 rounded-full text-slate-600 hover:text-rose-600 transition-colors shadow-sm"
                 >
                   <Heart className={`w-4 h-4 ${isWishlisted ? 'fill-rose-600 text-rose-600' : ''}`} />
@@ -47,7 +59,8 @@ export const SimilarProducts: React.FC = () => {
 
                 {/* Quick View Button on Hover */}
                 <button
-                  onClick={() =>
+                  onClick={(e) => {
+                    e.stopPropagation();
                     setQuickViewProduct({
                       id: prod.id,
                       name: prod.name,
@@ -75,11 +88,53 @@ export const SimilarProducts: React.FC = () => {
                       reviews: [],
                       questions: [],
                       frequentlyBoughtTogether: [],
-                    })
-                  }
-                  className="absolute bottom-2 left-1/2 -translate-x-1/2 bg-slate-900/90 hover:bg-slate-900 text-white text-xs font-bold px-3 py-1.5 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity flex items-center gap-1.5 shadow-md"
+                    });
+                  }}
+                  className="absolute top-2 right-2 z-10 w-7 h-7 rounded-full bg-white/90 text-slate-700 hover:bg-[#02367B] hover:text-white flex items-center justify-center shadow transition-colors"
+                  title="Quick View"
                 >
-                  <Eye className="w-3.5 h-3.5" /> Quick View
+                  <Eye className="w-3.5 h-3.5" />
+                </button>
+
+                {/* Add to Cart Overlay Button ON Product Image */}
+                <button
+                  type="button"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    addToCart({
+                      id: prod.id,
+                      name: prod.name,
+                      currentPrice: prod.currentPrice,
+                      oldPrice: prod.oldPrice,
+                      discountPercentage: prod.discountPercentage,
+                      rating: prod.rating,
+                      reviewCount: prod.reviewCount,
+                      images: [prod.image],
+                      sku: 'SKU-SIM',
+                      brand: 'Orbit',
+                      category: prod.category,
+                      categoryHierarchy: ['Home', prod.category],
+                      model: 'MOD-SIM',
+                      availability: 'In Stock',
+                      stockCount: 15,
+                      warranty: '2 Years',
+                      shortDescription: prod.name,
+                      features: [],
+                      colors: [{ name: 'Black', hex: '#000' }],
+                      sizes: ['55"'],
+                      specifications: [],
+                      fullDescription: '',
+                      deliveryInfo: { freeDelivery: true, location: 'Addis Ababa', estimatedDays: '1 Day', warrantyYears: 2, supportedPayments: [] },
+                      reviews: [],
+                      questions: [],
+                      frequentlyBoughtTogether: [],
+                    });
+                  }}
+                  className="absolute bottom-2 left-2 right-2 z-10 bg-[#02367B] hover:bg-amber-400 text-white hover:text-slate-950 text-xs font-extrabold py-2 px-3 rounded-xl flex items-center justify-center gap-1.5 shadow-md border border-white/20 transition-all duration-300 transform sm:translate-y-2 sm:opacity-0 group-hover:translate-y-0 group-hover:opacity-100 cursor-pointer"
+                  title="Add to Cart"
+                >
+                  <ShoppingBag className="w-3.5 h-3.5" />
+                  <span>Add to Cart</span>
                 </button>
               </div>
 
@@ -112,7 +167,8 @@ export const SimilarProducts: React.FC = () => {
               </div>
 
               <button
-                onClick={() =>
+                onClick={(e) => {
+                  e.stopPropagation();
                   addToCart({
                     id: prod.id,
                     name: prod.name,
@@ -140,8 +196,8 @@ export const SimilarProducts: React.FC = () => {
                     reviews: [],
                     questions: [],
                     frequentlyBoughtTogether: [],
-                  })
-                }
+                  });
+                }}
                 className="w-full bg-slate-100 hover:bg-blue-600 hover:text-white text-slate-800 text-xs font-bold py-2.5 rounded-xl flex items-center justify-center gap-2 transition-colors mt-2"
               >
                 <ShoppingBag className="w-3.5 h-3.5" /> Add to Cart

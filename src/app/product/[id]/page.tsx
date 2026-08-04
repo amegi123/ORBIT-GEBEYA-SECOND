@@ -6,7 +6,7 @@ import { ProductTabs } from '@/components/product/ProductTabs';
 import { FrequentlyBoughtTogether } from '@/components/product/FrequentlyBoughtTogether';
 import { SimilarProducts } from '@/components/product/SimilarProducts';
 import { MobileStickyBar } from '@/components/product/MobileStickyBar';
-import { orbitProduct } from '@/data/mockProduct';
+import { getProductById } from '@/data/mockProduct';
 
 export function generateStaticParams() {
   return [
@@ -19,45 +19,47 @@ export function generateStaticParams() {
 }
 
 export default function ProductPage({ params }: { params: { id: string } }) {
+  const product = getProductById(params.id);
+
   return (
     <div className="max-w-7xl mx-auto px-4 md:px-8 py-6 space-y-8 pb-16 font-sans">
       {/* 1. Breadcrumb Navigation */}
-      <Breadcrumb hierarchy={orbitProduct.categoryHierarchy} />
+      <Breadcrumb hierarchy={product.categoryHierarchy} />
 
-      {/* 2. Main Product Section matching reference screenshot layout */}
+      {/* 2. Main Product Section */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
-        {/* Left Column (Main Image, Yellow Highlight Thumbnails, Product Dimensions Box) */}
+        {/* Left Column (Images, Gallery) */}
         <div className="lg:col-span-6">
           <ProductGallery
-            images={orbitProduct.images}
-            videoUrl={orbitProduct.videoUrl}
-            has360View={orbitProduct.has360View}
+            images={product.images}
+            videoUrl={product.videoUrl}
+            has360View={product.has360View}
           />
         </div>
 
-        {/* Right Column (Title, SKU, Description, Red Price, Key Features, Quantity, Yellow Buy Now Pill, Cart Button, Warranties) */}
+        {/* Right Column (Details, Pricing, Buttons) */}
         <div className="lg:col-span-6">
-          <ProductInfo product={orbitProduct} />
+          <ProductInfo product={product} />
         </div>
       </div>
 
-      {/* 3. Customer Reviews Section matching reference screenshot */}
+      {/* 3. Customer Reviews Section */}
       <CustomerReviewsSection
-        rating={orbitProduct.rating}
-        reviewCount={orbitProduct.reviewCount}
+        rating={product.rating}
+        reviewCount={product.reviewCount}
       />
 
       {/* 4. Frequently Bought Together Bundle */}
-      <FrequentlyBoughtTogether bundles={orbitProduct.frequentlyBoughtTogether} />
+      <FrequentlyBoughtTogether bundles={product.frequentlyBoughtTogether} />
 
       {/* 5. Sticky Product Tabs (Specs, Installation, FAQs) */}
-      <ProductTabs product={orbitProduct} />
+      <ProductTabs product={product} />
 
       {/* 6. Similar Products Recommendation Grid */}
       <SimilarProducts />
 
       {/* 7. Mobile Sticky CTA Bar */}
-      <MobileStickyBar product={orbitProduct} />
+      <MobileStickyBar product={product} />
     </div>
   );
 }

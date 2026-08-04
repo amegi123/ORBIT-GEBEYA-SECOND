@@ -59,14 +59,17 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
   // Automatically reset navigation loading spinner when route changes
   useEffect(() => {
     setIsPageNavigating(false);
+    if (typeof window !== 'undefined') {
+      window.scrollTo({ top: 0, behavior: 'instant' });
+    }
   }, [pathname]);
 
-  // Fast 600ms maximum duration trigger to prevent any stuck loading
+  // Keep loading spinner active until pathname changes, with 5s safety fallback
   const triggerPageLoading = () => {
     setIsPageNavigating(true);
     const timer = setTimeout(() => {
       setIsPageNavigating(false);
-    }, 600);
+    }, 5000);
     return () => clearTimeout(timer);
   };
 

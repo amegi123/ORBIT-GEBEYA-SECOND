@@ -31,7 +31,7 @@ export const MobileBottomNav: React.FC = () => {
 
         {/* 2. Categories Link */}
         <Link
-          href="/#category-tvs"
+          href="/all-products"
           className="flex flex-col items-center justify-center gap-0.5 text-white hover:opacity-80 transition-opacity py-1 px-3"
         >
           <Grid className="w-5 h-5 text-white" />
