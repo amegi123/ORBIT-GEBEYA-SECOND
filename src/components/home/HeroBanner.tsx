@@ -159,39 +159,9 @@ export const HeroBanner: React.FC = () => {
                 src={slide.image}
                 alt={slide.title}
                 fill
-                className="object-cover object-center filter brightness-[0.82]"
+                className="object-cover object-center"
                 priority={idx === 0}
               />
-
-              {/* Blue Gradient Overlay for text contrast */}
-              <div className="absolute inset-0 bg-gradient-to-t from-[#002F75]/90 via-[#0047AB]/40 to-transparent" />
-
-              {/* Slide Text Content */}
-              <div className="relative z-10 h-full p-6 sm:p-12 flex flex-col justify-end text-white space-y-4">
-                <div className="inline-flex items-center gap-1.5 bg-amber-400 text-slate-950 font-black text-xs px-3.5 py-1 rounded-full uppercase tracking-wider w-fit shadow-md">
-                  <Zap className="w-3.5 h-3.5 fill-slate-950" />
-                  {slide.tag}
-                </div>
-
-                <h2 className="text-2xl sm:text-5xl font-extrabold tracking-tight leading-tight text-white drop-shadow-md max-w-2xl">
-                  {slide.title}
-                </h2>
-
-                <p className="text-xs sm:text-base text-slate-200 max-w-lg font-medium">
-                  {slide.subtitle}
-                </p>
-
-                <div className="pt-2">
-                  <Link
-                    href={slide.ctaLink}
-                    onClick={() => triggerPageLoading()}
-                    className="inline-flex items-center gap-2 bg-amber-400 hover:bg-amber-500 text-slate-950 font-black px-7 py-3 rounded-full text-xs sm:text-sm uppercase tracking-wider shadow-lg transition-transform hover:scale-105"
-                  >
-                    <span>{slide.ctaText}</span>
-                    <ArrowRight className="w-4 h-4" />
-                  </Link>
-                </div>
-              </div>
             </div>
           ))}
 
